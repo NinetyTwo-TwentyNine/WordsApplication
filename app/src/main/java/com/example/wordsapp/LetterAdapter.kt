@@ -33,10 +33,10 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Adapter for the [RecyclerView] in [MainActivity].
  */
-class LetterAdapter(val context_recycler: RecyclerView) :
+class LetterAdapter() :
     RecyclerView.Adapter<LetterAdapter.LetterViewHolder>() {
 
-    private var layoutManager = context_recycler.layoutManager
+    var getLayoutType: (()->Int)? = null
 
     // Generates a [CharRange] from 'A' to 'Z' and converts it to a list
     private val list = ('A').rangeTo('Z').toList()
@@ -74,12 +74,7 @@ class LetterAdapter(val context_recycler: RecyclerView) :
         holder.button.setOnClickListener {
             val context = holder.itemView.context
             var letterId = holder.button.text.toString()
-            var layoutType = 0
-            if (layoutManager is GridLayoutManager) {
-                layoutType = (layoutManager as GridLayoutManager).spanCount - 1
-            } else if (layoutManager !is LinearLayoutManager) {
-                throw Exception("Attempt to use a layout manager of an unknown type!")
-            }
+            var layoutType = getLayoutType?.invoke()
 
             val intent = Intent(context, DetailActivity::class.java)
             intent.putExtra(DetailActivity.LETTER, letterId)

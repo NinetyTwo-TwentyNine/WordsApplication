@@ -37,10 +37,6 @@ class MainActivity : AppCompatActivity() {
 
     private var application_layout_type = APP_LAYOUT_MANAGER_TYPE_LINEAR
 
-    fun getLayoutType(): Int {
-        return application_layout_type
-    }
-
     private lateinit var recyclerView: RecyclerView
 
 
@@ -93,10 +89,12 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        recyclerView = binding.recyclerView
+        val recyclerAdapter = LetterAdapter()
+        recyclerAdapter.getLayoutType = { application_layout_type }
+        binding.recyclerView.adapter = recyclerAdapter
+
         // Sets the LinearLayoutManager of the recyclerview
         chooseLayout()
-        recyclerView.adapter = LetterAdapter(recyclerView)
     }
 
 }
